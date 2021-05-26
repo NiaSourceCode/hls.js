@@ -15,9 +15,9 @@ import type {
   ErrorData,
   FragLoadedData,
   SubtitleFragProcessed,
+  SubtitleTrackSwitchData,
   SubtitleTracksUpdatedData,
   TrackLoadedData,
-  TrackSwitchedData,
 } from '../types/events';
 
 const TICK_INTERVAL = 500; // how often to tick in ms
@@ -153,7 +153,7 @@ export class SubtitleStreamController
 
   onSubtitleTrackSwitch(
     event: Events.SUBTITLE_TRACK_SWITCH,
-    data: TrackSwitchedData
+    data: SubtitleTrackSwitchData
   ) {
     this.currentTrackId = data.id;
 

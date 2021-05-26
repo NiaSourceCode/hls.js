@@ -160,9 +160,11 @@ export interface AudioTrackSwitchingData {
   url: string;
 }
 
-export interface AudioTrackSwitchedData {
+export interface TrackSwitchedData {
   id: number;
 }
+
+export interface AudioTrackSwitchedData extends TrackSwitchedData {}
 
 export interface AudioTrackLoadedData extends TrackLoadedData {}
 
@@ -174,8 +176,7 @@ export interface SubtitleTracksUpdatedData {
   subtitleTracks: MediaPlaylist[];
 }
 
-export interface SubtitleTrackSwitchData {
-  id: number;
+export interface SubtitleTrackSwitchData extends TrackSwitchedData {
   name?: string;
   groupId?: string;
   type?: MediaPlaylistType | 'main';
@@ -183,10 +184,6 @@ export interface SubtitleTrackSwitchData {
 }
 
 export interface SubtitleTrackLoadedData extends TrackLoadedData {}
-
-export interface TrackSwitchedData {
-  id: number;
-}
 
 export interface SubtitleFragProcessed {
   success: boolean;
