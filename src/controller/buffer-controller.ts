@@ -30,8 +30,10 @@ import { LevelDetails } from '../loader/level-details';
 const MediaSource = getMediaSource();
 const VIDEO_CODEC_PROFILE_REPACE = /([ha]vc.)(?:\.[^.,]+)+/;
 
-var my_data = new Uint8Array();
-var my_index = 0;
+var my_video = new Uint8Array();
+var my_audio = new Uint8Array();
+var my_video_index = 0;
+var my_audio_index = 0;
 var my_stop = false;
 
 export default class BufferController implements ComponentAPI {
@@ -353,22 +355,38 @@ export default class BufferController implements ComponentAPI {
           }
         }
 
-        if (type == "audio") {
-          console.log(eventData);
-          console.log(my_data.length);
-          var old_data = new Uint8Array(my_data.length);
-          old_data.set(my_data);
-          my_data = new Uint8Array(old_data.length + data.length);
-          my_data.set(data, old_data.length);
-          if (my_data.length > 10000000) {
-            const blob = new Blob([my_data], {type: "audio/aac"});
+        console.log(eventData);
+        if (type == "video") {
+          console.log('video:', my_video.length);
+          var old_data = new Uint8Array(my_video.length);
+          old_data.set(my_video);
+          my_video = new Uint8Array(old_data.length + data.length);
+          my_video.set(data, old_data.length);
+          if (my_video.length > 100000000) {
+            const blob = new Blob([my_video], {type: "application/octet-stream"});
             var a = document.createElement("a");
             a.href = URL.createObjectURL(blob);
-            a.download = my_index + ".aac";
+            a.download = my_video_index + ".mp4";
             a.click();
             URL.revokeObjectURL(a.href);
-            my_data = new Uint8Array();
-            my_index ++;
+            my_video = new Uint8Array();
+            my_video_index ++;
+          }
+        } else if (type == "audio") {
+          console.log('audio:', my_audio.length);
+          var old_data = new Uint8Array(my_audio.length);
+          old_data.set(my_audio);
+          my_audio = new Uint8Array(old_data.length + data.length);
+          my_audio.set(data, old_data.length);
+          if (my_audio.length > 10000000) {
+            const blob = new Blob([my_audio]);
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = my_audio_index + ".aac";
+            a.click();
+            URL.revokeObjectURL(a.href);
+            my_audio = new Uint8Array();
+            my_audio_index ++;
           }
         }
 
@@ -532,14 +550,21 @@ export default class BufferController implements ComponentAPI {
           // 加载结束
           if (!my_stop) {
             console.log('end');
-            const blob = new Blob([my_data], {type: "audio/aac"});
+            var blob;
+            // 保存视频
+            blob = new Blob([my_video]);
             var a = document.createElement("a");
             a.href = URL.createObjectURL(blob);
-            a.download = my_index + ".aac";
+            a.download = my_video_index + ".mp4";
             a.click();
             URL.revokeObjectURL(a.href);
-            my_data = new Uint8Array();
-            my_index ++;
+            // 保存音频
+            blob = new Blob([my_audio]);
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = my_audio_index + ".aac";
+            a.click();
+            URL.revokeObjectURL(a.href);
             my_stop = true;
           }
 

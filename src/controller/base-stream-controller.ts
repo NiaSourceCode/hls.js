@@ -678,6 +678,8 @@ export default class BaseStreamController
       return;
     }
 
+    // console.log(data);
+    
     const { data1, data2 } = data;
     let buffer = data1;
     if (data1 && data2) {
