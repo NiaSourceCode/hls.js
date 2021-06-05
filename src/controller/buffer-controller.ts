@@ -353,18 +353,18 @@ export default class BufferController implements ComponentAPI {
           }
         }
 
-        if (type == "video") {
-          console.log(my_data);// Uint8array
+        if (type == "audio") {
+          console.log(eventData);
+          console.log(my_data.length);
           var old_data = new Uint8Array(my_data.length);
           old_data.set(my_data);
           my_data = new Uint8Array(old_data.length + data.length);
-          my_data.set(old_data);
           my_data.set(data, old_data.length);
-          if (my_data.length > 100000000) {
-            const blob = new Blob([my_data], {type: "application/octet-stream"});
+          if (my_data.length > 10000000) {
+            const blob = new Blob([my_data], {type: "audio/aac"});
             var a = document.createElement("a");
             a.href = URL.createObjectURL(blob);
-            a.download = my_index + ".mp4";
+            a.download = my_index + ".aac";
             a.click();
             URL.revokeObjectURL(a.href);
             my_data = new Uint8Array();
@@ -532,10 +532,10 @@ export default class BufferController implements ComponentAPI {
           // 加载结束
           if (!my_stop) {
             console.log('end');
-            const blob = new Blob([my_data], {type: "application/octet-stream"});
+            const blob = new Blob([my_data], {type: "audio/aac"});
             var a = document.createElement("a");
             a.href = URL.createObjectURL(blob);
-            a.download = my_index + ".mp4";
+            a.download = my_index + ".aac";
             a.click();
             URL.revokeObjectURL(a.href);
             my_data = new Uint8Array();
