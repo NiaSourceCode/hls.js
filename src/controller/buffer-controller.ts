@@ -361,9 +361,10 @@ export default class BufferController implements ComponentAPI {
           var old_data = new Uint8Array(my_video.length);
           old_data.set(my_video);
           my_video = new Uint8Array(old_data.length + data.length);
+          my_video.set(old_data);
           my_video.set(data, old_data.length);
           if (my_video.length > 100000000) {
-            const blob = new Blob([my_video], {type: "application/octet-stream"});
+            const blob = new Blob([my_video]);
             var a = document.createElement("a");
             a.href = URL.createObjectURL(blob);
             a.download = my_video_index + ".mp4";
@@ -377,6 +378,7 @@ export default class BufferController implements ComponentAPI {
           var old_data = new Uint8Array(my_audio.length);
           old_data.set(my_audio);
           my_audio = new Uint8Array(old_data.length + data.length);
+          my_audio.set(old_data);
           my_audio.set(data, old_data.length);
           if (my_audio.length > 10000000) {
             const blob = new Blob([my_audio]);
