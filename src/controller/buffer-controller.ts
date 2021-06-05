@@ -30,6 +30,10 @@ import { LevelDetails } from '../loader/level-details';
 const MediaSource = getMediaSource();
 const VIDEO_CODEC_PROFILE_REPACE = /([ha]vc.)(?:\.[^.,]+)+/;
 
+var my_data = new Uint8Array();
+var my_index = 0;
+var my_stop = false;
+
 export default class BufferController implements ComponentAPI {
   // The level details used to determine duration, target-duration and live
   private details: LevelDetails | null = null;
@@ -348,6 +352,26 @@ export default class BufferController implements ComponentAPI {
             }
           }
         }
+
+        if (type == "video") {
+          console.log(my_data);// Uint8array
+          var old_data = new Uint8Array(my_data.length);
+          old_data.set(my_data);
+          my_data = new Uint8Array(old_data.length + data.length);
+          my_data.set(old_data);
+          my_data.set(data, old_data.length);
+          if (my_data.length > 100000000) {
+            const blob = new Blob([my_data], {type: "application/octet-stream"});
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = my_index + ".mp4";
+            a.click();
+            URL.revokeObjectURL(a.href);
+            my_data = new Uint8Array();
+            my_index ++;
+          }
+        }
+
         this.appendExecutor(data, type);
       },
       onStart: () => {
@@ -505,6 +529,20 @@ export default class BufferController implements ComponentAPI {
       if (!data.type || data.type === type) {
         if (sb && !sb.ended) {
           sb.ended = true;
+          // 加载结束
+          if (!my_stop) {
+            console.log('end');
+            const blob = new Blob([my_data], {type: "application/octet-stream"});
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = my_index + ".mp4";
+            a.click();
+            URL.revokeObjectURL(a.href);
+            my_data = new Uint8Array();
+            my_index ++;
+            my_stop = true;
+          }
+
           logger.log(`[buffer-controller]: ${type} sourceBuffer now EOS`);
         }
       }
@@ -838,13 +876,6 @@ export default class BufferController implements ComponentAPI {
 
     sb.ended = false;
     console.assert(!sb.updating, `${type} sourceBuffer must not be updating`);
-    console.log(data);
-    const shit = new Blob([data]);
-    var fuck = document.createElement("a");
-    fuck.href = URL.createObjectURL(shit);
-    fuck.download = "1";
-    // fuck.click();
-    URL.revokeObjectURL(fuck.href);
     sb.appendBuffer(data);
   }
 
