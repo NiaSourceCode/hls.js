@@ -1033,6 +1033,13 @@ export default class StreamController
     const id = 'main';
     const { hls } = this;
     const { remuxResult, chunkMeta } = transmuxResult;
+    try {
+      throw Error();
+    } catch(e) {
+      console.log(e);
+    }
+
+    console.log(transmuxResult);
 
     const context = this.getCurrentContext(chunkMeta);
     if (!context) {

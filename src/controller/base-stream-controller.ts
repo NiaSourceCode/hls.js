@@ -580,6 +580,7 @@ export default class BaseStreamController
     this.state = State.FRAG_LOADING;
     this.hls.trigger(Events.FRAG_LOADING, { frag, targetBufferTime });
 
+    // 使用xhr加载ts
     return this.fragmentLoader
       .load(frag, progressCallback)
       .catch((error: LoadError) => this.handleFragLoadError(error));

@@ -152,6 +152,7 @@ export default class TransmuxerInterface {
     chunkMeta: ChunkMetadata,
     defaultInitPTS?: number
   ): void {
+    // data应该和xhr获取的数据一样
     chunkMeta.transmuxing.start = self.performance.now();
     const { transmuxer, worker } = this;
     const timeOffset = part ? part.start : frag.start;
@@ -273,6 +274,8 @@ export default class TransmuxerInterface {
       }
 
       case 'transmuxComplete': {
+        // 分轨, data1, data2
+        console.log(data);
         this.handleTransmuxComplete(data.data);
         break;
       }
@@ -308,5 +311,6 @@ export default class TransmuxerInterface {
   private handleTransmuxComplete(result: TransmuxerResult) {
     result.chunkMeta.transmuxing.end = self.performance.now();
     this.onTransmuxComplete(result);
+    // stream-controller 的 _handleTransmuxComplete
   }
 }

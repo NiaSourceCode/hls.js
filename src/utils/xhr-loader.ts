@@ -125,10 +125,10 @@ class XhrLoader implements Loader<LoaderContext> {
       config.timeout
     );
     xhr.send();
-    console.log(xhr);
   }
 
   readystatechange(): void {
+    // XMLHttpRequest的回调函数
     const { context, loader: xhr, stats } = this;
     if (!context || !xhr) {
       return;
@@ -167,8 +167,8 @@ class XhrLoader implements Loader<LoaderContext> {
           if (context.responseType === 'arraybuffer') {
             data = xhr.response;
             len = data.byteLength;
-            // 原始数据
-            // console.log(data);
+            // 原始ts数据
+            console.log(data);
             // const blob = new Blob([data]);
             // var a = document.createElement("a");
             // a.href = URL.createObjectURL(blob);
