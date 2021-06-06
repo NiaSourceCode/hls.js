@@ -904,6 +904,7 @@ export default class BufferController implements ComponentAPI {
     sb.ended = false;
     console.assert(!sb.updating, `${type} sourceBuffer must not be updating`);
     sb.appendBuffer(data);
+    console.log(sb);
   }
 
   // Enqueues an operation to each SourceBuffer queue which, upon execution, resolves a promise. When all promises

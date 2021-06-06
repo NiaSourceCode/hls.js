@@ -1055,6 +1055,20 @@ export default class StreamController
 
     this.state = State.PARSING;
 
+    console.log(remuxResult);
+    // if (audio && audio.data2) {
+    //   let buffer = new Uint8Array(audio.data1.length + audio.data2.length);
+    //   buffer.set(audio.data1);
+    //   buffer.set(audio.data2, audio.data1.length);
+
+    //   const blob = new Blob([buffer]);
+    //   var a = document.createElement("a");
+    //   a.href = URL.createObjectURL(blob);
+    //   a.download = "0.aac";
+    //   a.click();
+    //   URL.revokeObjectURL(a.href);
+    // }
+
     if (initSegment) {
       if (initSegment.tracks) {
         this._bufferInitSegment(level, initSegment.tracks, frag, chunkMeta);

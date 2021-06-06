@@ -678,8 +678,6 @@ export default class BaseStreamController
       return;
     }
 
-    // console.log(data);
-    
     const { data1, data2 } = data;
     let buffer = data1;
     if (data1 && data2) {
@@ -699,6 +697,7 @@ export default class BaseStreamController
       parent: frag.type,
       data: buffer,
     };
+    // 调用buffer-controller
     this.hls.trigger(Events.BUFFER_APPENDING, segment);
 
     if (data.dropped && data.independent && !part) {
@@ -1360,6 +1359,12 @@ export default class BaseStreamController
   set state(nextState) {
     const previousState = this._state;
     if (previousState !== nextState) {
+      // FRAG_LOADING
+      // PARSING
+      // PARSED
+      // IDLE
+      // WAITING_LEVEL
+      // IDLE
       this._state = nextState;
       this.log(`${previousState}->${nextState}`);
     }

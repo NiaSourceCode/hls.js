@@ -125,6 +125,7 @@ class XhrLoader implements Loader<LoaderContext> {
       config.timeout
     );
     xhr.send();
+    console.log(xhr);
   }
 
   readystatechange(): void {
@@ -166,6 +167,14 @@ class XhrLoader implements Loader<LoaderContext> {
           if (context.responseType === 'arraybuffer') {
             data = xhr.response;
             len = data.byteLength;
+            // 原始数据
+            // console.log(data);
+            // const blob = new Blob([data]);
+            // var a = document.createElement("a");
+            // a.href = URL.createObjectURL(blob);
+            // a.download = "0.mp4";
+            // a.click();
+            // URL.revokeObjectURL(a.href);
           } else {
             data = xhr.responseText;
             len = data.length;

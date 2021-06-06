@@ -36,6 +36,7 @@ export default function TransmuxerWorker(self) {
         break;
       }
       case 'demux': {
+        console.log(data);
         const transmuxResult: TransmuxerResult | Promise<TransmuxerResult> =
           self.transmuxer.push(
             data.data,
