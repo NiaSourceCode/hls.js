@@ -36,6 +36,9 @@ export default function TransmuxerWorker(self) {
         break;
       }
       case 'demux': {
+        // 使用transmuxer进行ts视频的处理
+        // data: 原始数据
+        console.log(data);// demux
         const transmuxResult: TransmuxerResult | Promise<TransmuxerResult> =
         self.transmuxer.push(
           data.data,
@@ -43,8 +46,7 @@ export default function TransmuxerWorker(self) {
           data.chunkMeta,
           data.state
         );
-        // 使用transmuxer进行ts视频的处理
-        console.log(data);// demux 原始数据
+        // TransmuxerResult: 处理后的数据
         if (isPromise(transmuxResult)) {
           transmuxResult.then((data) => {
             emitTransmuxComplete(self, data);

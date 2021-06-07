@@ -168,7 +168,7 @@ class XhrLoader implements Loader<LoaderContext> {
             data = xhr.response;
             len = data.byteLength;
             // 原始ts数据
-            console.log(data);
+            console.log('loader:', data);
             // const blob = new Blob([data]);
             // var a = document.createElement("a");
             // a.href = URL.createObjectURL(blob);

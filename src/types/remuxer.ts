@@ -11,6 +11,7 @@ import type { SourceBufferName } from './buffer';
 import type { PlaylistLevelType } from './loader';
 
 export interface Remuxer {
+  // 这只是一个接口
   remux(
     audioTrack: DemuxedAudioTrack,
     videoTrack: DemuxedVideoTrack,

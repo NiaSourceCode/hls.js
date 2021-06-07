@@ -87,6 +87,7 @@ export default class Transmuxer {
     chunkMeta: ChunkMetadata,
     state?: TransmuxState
   ): TransmuxerResult | Promise<TransmuxerResult> {
+    // data -> TransmuxerResult
     const stats = chunkMeta.transmuxing;
     stats.executeStart = now();
 
@@ -98,6 +99,7 @@ export default class Transmuxer {
 
     const keyData = getEncryptionType(uintData, decryptdata);
     if (keyData && keyData.method === 'AES-128') {
+      // 没有加密?
       const decrypter = this.getDecrypter();
       // Software decryption is synchronous; webCrypto is not
       if (config.enableSoftwareAES) {
@@ -167,6 +169,7 @@ export default class Transmuxer {
       this.configureTransmuxer(uintData, transmuxConfig);
     }
 
+    console.log(this.transmux);
     const result = this.transmux(
       uintData,
       keyData,
@@ -181,6 +184,25 @@ export default class Transmuxer {
     currentState.trackSwitch = false;
 
     stats.executeEnd = now();
+    // remuxResult, data1, data2
+    var audio = result.remuxResult.audio;
+    var video = result.remuxResult.video;
+    if (audio && video && audio.data2 && video.data2) {
+      var audio_d1 = new Uint8Array(audio.data1.length);
+      var audio_d2 = new Uint8Array(audio.data2.length);
+      var video_d1 = new Uint8Array(video.data1.length);
+      var video_d2 = new Uint8Array(video.data2.length);
+      audio_d1.set(audio.data1);
+      audio_d2.set(audio.data2);
+      video_d1.set(video.data1);
+      video_d2.set(video.data2);
+      var my_data = new Object();
+      my_data['a1'] = audio_d1;
+      my_data['a2'] = audio_d2;
+      my_data['v1'] = video_d1;
+      my_data['v2'] = video_d2;
+      console.log('result:', my_data);
+    }
     return result;
   }
 
@@ -322,6 +344,7 @@ export default class Transmuxer {
     accurateTimeOffset: boolean,
     chunkMeta: ChunkMetadata
   ): TransmuxerResult | Promise<TransmuxerResult> {
+    console.log('transmux');
     let result: TransmuxerResult | Promise<TransmuxerResult>;
     if (keyData && keyData.method === 'SAMPLE-AES') {
       result = this.transmuxSampleAes(
@@ -348,9 +371,11 @@ export default class Transmuxer {
     accurateTimeOffset: boolean,
     chunkMeta: ChunkMetadata
   ): TransmuxerResult {
+    console.log('transmuxUnencripted:', data);
     const { audioTrack, avcTrack, id3Track, textTrack } = (
       this.demuxer as Demuxer
     ).demux(data, timeOffset, false, !this.config.progressive);
+    // MP4Remuxer
     const remuxResult = this.remuxer!.remux(
       audioTrack,
       avcTrack,
@@ -361,6 +386,7 @@ export default class Transmuxer {
       false,
       this.id
     );
+    console.log(remuxResult);
     return {
       remuxResult,
       chunkMeta,

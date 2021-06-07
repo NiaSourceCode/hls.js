@@ -275,8 +275,6 @@ export default class TransmuxerInterface {
       }
 
       case 'transmuxComplete': {
-        // remuxResult, data1, data2
-        console.log(data);
         this.handleTransmuxComplete(data.data);
         break;
       }

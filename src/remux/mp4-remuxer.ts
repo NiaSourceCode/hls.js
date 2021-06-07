@@ -120,6 +120,7 @@ export default class MP4Remuxer implements Remuxer {
     flush: boolean,
     playlistType: PlaylistLevelType
   ): RemuxerResult {
+    // 对视频进行封装
     let video: RemuxedTrack | undefined;
     let audio: RemuxedTrack | undefined;
     let initSegment: InitSegmentData | undefined;
