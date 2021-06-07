@@ -1033,13 +1033,13 @@ export default class StreamController
     const id = 'main';
     const { hls } = this;
     const { remuxResult, chunkMeta } = transmuxResult;
-    try {
-      throw Error();
-    } catch(e) {
-      console.log(e);
-    }
+    // try {
+    //   throw Error();
+    // } catch(e) {
+    //   console.log(e);
+    // }
 
-    console.log(transmuxResult);
+    // console.log(transmuxResult);
 
     const context = this.getCurrentContext(chunkMeta);
     if (!context) {
@@ -1062,7 +1062,6 @@ export default class StreamController
 
     this.state = State.PARSING;
 
-    console.log(remuxResult);
     // if (audio && audio.data2) {
     //   let buffer = new Uint8Array(audio.data1.length + audio.data2.length);
     //   buffer.set(audio.data1);

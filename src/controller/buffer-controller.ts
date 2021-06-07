@@ -355,42 +355,42 @@ export default class BufferController implements ComponentAPI {
           }
         }
 
-        console.log(eventData);
-        if (type == "video") {
-          console.log('video:', my_video.length);
-          var old_data = new Uint8Array(my_video.length);
-          old_data.set(my_video);
-          my_video = new Uint8Array(old_data.length + data.length);
-          my_video.set(old_data);
-          my_video.set(data, old_data.length);
-          if (my_video.length > 100000000) {
-            const blob = new Blob([my_video]);
-            var a = document.createElement("a");
-            a.href = URL.createObjectURL(blob);
-            a.download = my_video_index + ".mp4";
-            a.click();
-            URL.revokeObjectURL(a.href);
-            my_video = new Uint8Array();
-            my_video_index ++;
-          }
-        } else if (type == "audio") {
-          console.log('audio:', my_audio.length);
-          var old_data = new Uint8Array(my_audio.length);
-          old_data.set(my_audio);
-          my_audio = new Uint8Array(old_data.length + data.length);
-          my_audio.set(old_data);
-          my_audio.set(data, old_data.length);
-          if (my_audio.length > 10000000) {
-            const blob = new Blob([my_audio]);
-            var a = document.createElement("a");
-            a.href = URL.createObjectURL(blob);
-            a.download = my_audio_index + ".aac";
-            a.click();
-            URL.revokeObjectURL(a.href);
-            my_audio = new Uint8Array();
-            my_audio_index ++;
-          }
-        }
+        // console.log(eventData);
+        // if (type == "video") {
+        //   console.log('video:', my_video.length);
+        //   var old_data = new Uint8Array(my_video.length);
+        //   old_data.set(my_video);
+        //   my_video = new Uint8Array(old_data.length + data.length);
+        //   my_video.set(old_data);
+        //   my_video.set(data, old_data.length);
+        //   if (my_video.length > 100000000) {
+        //     const blob = new Blob([my_video]);
+        //     var a = document.createElement("a");
+        //     a.href = URL.createObjectURL(blob);
+        //     a.download = my_video_index + ".mp4";
+        //     a.click();
+        //     URL.revokeObjectURL(a.href);
+        //     my_video = new Uint8Array();
+        //     my_video_index ++;
+        //   }
+        // } else if (type == "audio") {
+        //   console.log('audio:', my_audio.length);
+        //   var old_data = new Uint8Array(my_audio.length);
+        //   old_data.set(my_audio);
+        //   my_audio = new Uint8Array(old_data.length + data.length);
+        //   my_audio.set(old_data);
+        //   my_audio.set(data, old_data.length);
+        //   if (my_audio.length > 10000000) {
+        //     const blob = new Blob([my_audio]);
+        //     var a = document.createElement("a");
+        //     a.href = URL.createObjectURL(blob);
+        //     a.download = my_audio_index + ".aac";
+        //     a.click();
+        //     URL.revokeObjectURL(a.href);
+        //     my_audio = new Uint8Array();
+        //     my_audio_index ++;
+        //   }
+        // }
 
         this.appendExecutor(data, type);
       },
