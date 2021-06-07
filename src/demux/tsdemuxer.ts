@@ -223,6 +223,7 @@ class TSDemuxer implements Demuxer {
     isSampleAes = false,
     flush = false
   ): DemuxerResult {
+    // 封装
     if (!isSampleAes) {
       this.sampleAes = null;
     }
@@ -270,6 +271,9 @@ class TSDemuxer implements Demuxer {
         data.buffer.byteLength - len
       );
     }
+
+    console.log('avc:', avcData);
+    console.log('audio:', audioData);
 
     // loop through TS packets
     for (let start = syncOffset; start < len; start += 188) {
