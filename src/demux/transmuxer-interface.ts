@@ -202,6 +202,7 @@ export default class TransmuxerInterface {
 
     // Frags with sn of 'initSegment' are not transmuxed
     if (worker) {
+      // 一般work != undefined
       // post fragment payload as transferable objects for ArrayBuffer (no copy)
       worker.postMessage(
         {

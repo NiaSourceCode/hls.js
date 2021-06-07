@@ -43,6 +43,7 @@ export default function TransmuxerWorker(self) {
           data.chunkMeta,
           data.state
         );
+        // 使用transmuxer进行ts视频的处理
         console.log(data);// demux 原始数据
         if (isPromise(transmuxResult)) {
           transmuxResult.then((data) => {
@@ -50,6 +51,25 @@ export default function TransmuxerWorker(self) {
           });
         } else {
           // 一般是not
+          // remuxResult, data1, data2
+          // var audio = transmuxResult.remuxResult.audio;
+          // var video = transmuxResult.remuxResult.video;
+          // if (audio && video && audio.data2 && video.data2) {
+          //   var audio_d1 = new Uint8Array(audio.data1.length);
+          //   var audio_d2 = new Uint8Array(audio.data2.length);
+          //   var video_d1 = new Uint8Array(video.data1.length);
+          //   var video_d2 = new Uint8Array(video.data2.length);
+          //   audio_d1.set(audio.data1);
+          //   audio_d2.set(audio.data2);
+          //   video_d1.set(video.data1);
+          //   video_d2.set(video.data2);
+          //   var my_data = new Object();
+          //   my_data['a1'] = audio_d1;
+          //   my_data['a2'] = audio_d2;
+          //   my_data['v1'] = video_d1;
+          //   my_data['v2'] = video_d2;
+          //   console.log(my_data);
+          // }
           emitTransmuxComplete(self, transmuxResult);
         }
         break;
@@ -87,23 +107,6 @@ function emitTransmuxComplete(self: any, transmuxResult: TransmuxerResult) {
   }
   if (video) {
     addToTransferable(transferable, video);
-  }
-  // remuxResult, data1, data2
-  if (audio && video && audio.data2 && video.data2) {
-    var audio_d1 = new Uint8Array(audio.data1.length);
-    var audio_d2 = new Uint8Array(audio.data2.length);
-    var video_d1 = new Uint8Array(video.data1.length);
-    var video_d2 = new Uint8Array(video.data2.length);
-    audio_d1.set(audio.data1);
-    audio_d2.set(audio.data2);
-    video_d1.set(video.data1);
-    video_d2.set(video.data2);
-    var my_data = new Object();
-    my_data['a1'] = audio_d1;
-    my_data['a2'] = audio_d2;
-    my_data['v1'] = video_d1;
-    my_data['v2'] = video_d2;
-    console.log(my_data);
   }
 
   self.postMessage(
